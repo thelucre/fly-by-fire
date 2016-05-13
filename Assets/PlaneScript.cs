@@ -21,7 +21,7 @@ public class PlaneScript : MonoBehaviour {
 		rigidbody.AddTorque(0,0,-move.x*Rotation*Time.deltaTime);
 			
 		Vector3 forward = transform.localRotation * new Vector3(1,0,1);
-		Debug.Log(forward);
+
 		if(move.y > 0) {
 			rigidbody.AddForce( forward * Thrust );
 		}
