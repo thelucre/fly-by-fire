@@ -6,14 +6,16 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 
 	Rigidbody rigidbody;
-	float Speed = 30f;
+	float OriginSpeed = 0, Speed = 50f;
+
+	public void SetOriginSpeed(float _playerMagnitude) { OriginSpeed = _playerMagnitude; }
 
 	void Start() {
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 	}
 
 	void FixedUpdate() {
-		rigidbody.velocity = transform.forward * Speed;
+		rigidbody.velocity = transform.forward * (Speed + OriginSpeed);
 	}
 
 	void OnBecameInvisible() {

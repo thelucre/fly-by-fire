@@ -35,7 +35,8 @@ public class PlaneScript : MonoBehaviour {
 		}
 
 		if(player.GetButtonDown("Shoot")) {
-			Instantiate(BulletPrefab, ShootOrigin.position, Quaternion.LookRotation(forward, Vector3.up));
+			GameObject bullet = (GameObject)Instantiate(BulletPrefab, ShootOrigin.position, Quaternion.LookRotation(forward, Vector3.up));
+			bullet.GetComponent<Bullet>().SetOriginSpeed( rigidbody.velocity.magnitude );
 		}
 	}
 }
