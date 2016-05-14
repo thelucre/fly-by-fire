@@ -5,12 +5,14 @@ using Rewired;
 public class PlaneScript : MonoBehaviour {
 
 	public int PlayerID;
+	public Transform ShootOrigin;
+	public GameObject BulletPrefab;
 
 	Player player; 
 
 	float
 	Rotation = 500f,
-	Thrust = 25f
+	Thrust = 45f
 	;
 
 	Rigidbody rigidbody;
@@ -30,6 +32,10 @@ public class PlaneScript : MonoBehaviour {
 
 		if(player.GetButton("Thrust")) {
 			rigidbody.AddForce( forward * Thrust );
+		}
+
+		if(player.GetButtonDown("Shoot")) {
+			Instantiate(BulletPrefab, ShootOrigin.position, Quaternion.LookRotation(forward, Vector3.up));
 		}
 	}
 }
