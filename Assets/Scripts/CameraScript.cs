@@ -45,6 +45,6 @@ public class CameraScript : MonoBehaviour {
 		// Closest that the camera can go 
 		targetPos.z = Mathf.Min(targetPos.z, -10f);
 
-		Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, 3.0f*Time.deltaTime);
+		Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, 8.0f*Time.deltaTime);
 	}
 }
