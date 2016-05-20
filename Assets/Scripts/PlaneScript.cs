@@ -7,6 +7,7 @@ public class PlaneScript : MonoBehaviour {
 	public int PlayerID;
 	public Transform ShootOrigin;
 	public GameObject BulletPrefab;
+	public Transform Propeller;
 
 	Player player; 
 
@@ -37,6 +38,10 @@ public class PlaneScript : MonoBehaviour {
 		if(player.GetButtonDown("Shoot")) {
 			GameObject bullet = (GameObject)Instantiate(BulletPrefab, ShootOrigin.position, Quaternion.LookRotation(forward, Vector3.up));
 			bullet.GetComponent<Bullet>().SetOriginSpeed( rigidbody.velocity.magnitude );
+		}
+
+		if(Propeller) {
+			Propeller.Rotate(rigidbody.velocity.magnitude, 0, 0);
 		}
 	}
 }
