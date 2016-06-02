@@ -19,14 +19,28 @@ public class PlaneScript : MonoBehaviour {
 	Rigidbody rigidbody;
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		player = ReInput.players.GetPlayer(PlayerID);
+		Debug.Log(player.name);
+		Debug.Log("Joystick count : " +ReInput.controllers.joystickCount);
+
+		if (Input.GetJoystickNames().Length == 0) {
+			Debug.Log("no joysticks");
+		}
+
+		if (Input.GetJoystickNames().Length > 0) {
+			foreach(string joystick in Input.GetJoystickNames()) {
+				print (joystick);
+			}
+		}
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		Vector2 move = new Vector2(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
+	void Update () 
+	{
+		Vector2 move = new Vector2(player.GetAxis("Rotate"),0);
 		rigidbody.AddTorque(0,0,-move.x*Rotation*Time.deltaTime);
 			
 		Vector3 forward = transform.localRotation * new Vector3(1,0,1);
