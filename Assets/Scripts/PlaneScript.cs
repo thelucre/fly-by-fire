@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Rewired;
+using UnityEngine.SceneManagement;
 
-public class PlaneScript : MonoBehaviour {
+public class PlaneScript : MonoBehaviour, IShootable {
 
 	public int PlayerID;
 	public Transform ShootOrigin;
@@ -10,10 +11,11 @@ public class PlaneScript : MonoBehaviour {
 	public Transform Propeller;
 
 	Player player; 
+	int Health = 3;
 
 	float
-	Rotation = 500f,
-	Thrust = 45f
+	Rotation = 550f,
+	Thrust = 65f
 	;
 
 	Rigidbody rigidbody;
@@ -51,11 +53,24 @@ public class PlaneScript : MonoBehaviour {
 
 		if(player.GetButtonDown("Shoot")) {
 			GameObject bullet = (GameObject)Instantiate(BulletPrefab, ShootOrigin.position, Quaternion.LookRotation(forward, Vector3.up));
-			bullet.GetComponent<Bullet>().SetOriginSpeed( rigidbody.velocity.magnitude );
+			Bullet b = bullet.GetComponent<Bullet>();
+			b.SetOriginSpeed( rigidbody.velocity.magnitude );
+			b.SetOriginObject (gameObject);
 		}
 
 		if(Propeller) {
 			Propeller.Rotate(rigidbody.velocity.magnitude, 0, 0);
 		}
+	}
+
+	public void TakeDamage ()
+	{
+		Health--;
+		CheckDead ();
+	}
+
+	void CheckDead()
+	{
+		if (Health <= 0) SceneManager.LoadScene ("Game");
 	}
 }

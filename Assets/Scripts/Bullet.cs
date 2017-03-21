@@ -7,6 +7,8 @@ public class Bullet : MonoBehaviour {
 
 	Rigidbody rigidbody;
 	float OriginSpeed = 0, Speed = 50f;
+	GameObject OriginObject; 
+
 
 	public void SetOriginSpeed(float _playerMagnitude) { OriginSpeed = _playerMagnitude; }
 
@@ -20,6 +22,19 @@ public class Bullet : MonoBehaviour {
 
 	void OnBecameInvisible() {
 		Destroy(gameObject);
+	}
+
+	public void SetOriginObject(GameObject obj)
+	{
+		OriginObject = obj;
+	}
+
+	void OnCollisionEnter(Collision hit)
+	{
+		IShootable shootable = hit.gameObject.GetComponent<IShootable> ();
+		if (hit.gameObject != OriginObject && shootable != null) {
+			shootable.TakeDamage ();
+		}
 	}
 		
 }
