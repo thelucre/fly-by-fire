@@ -43,8 +43,8 @@ public class CameraScript : MonoBehaviour {
 		targetPos = middlePoint + dir * (cameraDistance + DISTANCE_MARGIN);
 
 		// Closest that the camera can go 
-		targetPos.z = Mathf.Min(targetPos.z, -10f);
+		targetPos.z = Mathf.Min(targetPos.z, -20f);
 
-		Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, 11.0f*Time.deltaTime);
+		Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, 20.0f*Time.deltaTime);
 	}
 }

@@ -12,10 +12,13 @@ public class PlaneScript : MonoBehaviour, IShootable {
 
 	Player player; 
 	int Health = 3;
+	bool IsBoosting = false;
 
 	float
 	Rotation = 550f,
-	Thrust = 65f
+	Thrust = 75f,
+	BoostModifier = 700f,
+	CurrentBoostMod = 0f
 	;
 
 	Rigidbody rigidbody;
@@ -47,8 +50,14 @@ public class PlaneScript : MonoBehaviour, IShootable {
 			
 		Vector3 forward = transform.localRotation * new Vector3(1,0,1);
 
-		if(player.GetButton("Thrust")) {
-			rigidbody.AddForce( forward * Thrust );
+		if (!IsBoosting && player.GetButton ("Booster")) { Boost (); }
+		if (player.GetButton ("Reload")) { SceneManager.LoadScene ("Game"); }
+
+		if(player.GetButton("Thrust") || CurrentBoostMod > 0f) {
+			Debug.Log ("PLAYER " + PlayerID + " BOOST: " + CurrentBoostMod);
+			rigidbody.AddForce( forward * (Thrust + CurrentBoostMod) );
+			if (CurrentBoostMod > 0f)
+				DecreaseBoost ();
 		}
 
 		if(player.GetButtonDown("Shoot")) {
@@ -72,5 +81,24 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	void CheckDead()
 	{
 		if (Health <= 0) SceneManager.LoadScene ("Game");
+	}
+
+	void Boost() {
+		IsBoosting = true; 
+		CurrentBoostMod = BoostModifier;
+	}
+
+	void DecreaseBoost()
+	{
+		CurrentBoostMod *= 0.9f;
+		if (CurrentBoostMod <= 0.2f) {
+			CurrentBoostMod = 0f;
+			Invoke ("BoostComplete", 2f);
+		}
+	}
+
+	void BoostComplete()
+	{
+		IsBoosting = false;
 	}
 }
