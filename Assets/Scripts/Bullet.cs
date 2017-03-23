@@ -14,6 +14,7 @@ public class Bullet : MonoBehaviour {
 
 	void Start() {
 		rigidbody = gameObject.GetComponent<Rigidbody>();
+		Sound.Instance.PlaySFX (Sound.SHOOT);
 	}
 
 	void FixedUpdate() {
@@ -34,6 +35,8 @@ public class Bullet : MonoBehaviour {
 		IShootable shootable = hit.gameObject.GetComponent<IShootable> ();
 		if (hit.gameObject != OriginObject && shootable != null) {
 			shootable.TakeDamage ();
+			Sound.Instance.PlaySFX (Sound.HIT);
+			Destroy (gameObject);
 		}
 	}
 		

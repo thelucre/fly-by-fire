@@ -18,6 +18,12 @@ public class CameraScript : MonoBehaviour {
 	private float fov;
 	private float tanFov;
 
+	float 
+		ShakeAmount = 0f,
+		ShakeDecay = 0.1f
+	;
+
+
 	void Start() {
 		aspectRatio = Screen.width / Screen.height;
 		tanFov = Mathf.Tan(Mathf.Deg2Rad * Camera.main.fieldOfView / 2.0f);
@@ -44,7 +50,18 @@ public class CameraScript : MonoBehaviour {
 
 		// Closest that the camera can go 
 		targetPos.z = Mathf.Min(targetPos.z, -20f);
+			
 
-		Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, 20.0f*Time.deltaTime);
+		Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, targetPos, 20.0f*Time.deltaTime)
+			+ ((ShakeAmount*ShakeAmount) * Random.insideUnitSphere);
+
+		ShakeAmount -= ShakeDecay; 
+		ShakeAmount = Mathf.Max (ShakeAmount, 0);
+
+	}
+
+	public void AddToShake(float amt) 
+	{
+		ShakeAmount += amt;
 	}
 }

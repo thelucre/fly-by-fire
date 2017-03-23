@@ -16,8 +16,8 @@ public class PlaneScript : MonoBehaviour, IShootable {
 
 	float
 	Rotation = 550f,
-	Thrust = 75f,
-	BoostModifier = 700f,
+	Thrust = 90f,
+	BoostModifier = 400f,
 	CurrentBoostMod = 0f
 	;
 
@@ -54,7 +54,6 @@ public class PlaneScript : MonoBehaviour, IShootable {
 		if (player.GetButton ("Reload")) { SceneManager.LoadScene ("Game"); }
 
 		if(player.GetButton("Thrust") || CurrentBoostMod > 0f) {
-			Debug.Log ("PLAYER " + PlayerID + " BOOST: " + CurrentBoostMod);
 			rigidbody.AddForce( forward * (Thrust + CurrentBoostMod) );
 			if (CurrentBoostMod > 0f)
 				DecreaseBoost ();
@@ -76,6 +75,7 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	{
 		Health--;
 		CheckDead ();
+		GameControllerScript.Instance.Cam.AddToShake (1.5f);
 	}
 
 	void CheckDead()

@@ -6,15 +6,27 @@ using Rewired;
 
 public class GameControllerScript : MonoBehaviour 
 {
-	Player player; 
+	// Singleton
+	public static GameControllerScript Instance;
 
-	// Use this for initialization
-	void Start () {
+	public Player player; 
+	public CameraScript Cam;
+
+	void Awake()
+	{
+		if (Instance == null)
+			Instance = this;
+
+		Cam = Camera.main.gameObject.GetComponent<CameraScript> ();
+	}
+		
+	void Start () 
+	{
 		player = ReInput.players.GetPlayer(0);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void Update () 
+	{
 		
 	}
 }
