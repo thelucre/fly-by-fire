@@ -22,24 +22,20 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	;
 
 	Rigidbody rigidbody;
+	GunScript gun;
 
 	// Use this for initialization
 	void Start () 
 	{
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		player = ReInput.players.GetPlayer(PlayerID);
-		Debug.Log(player.name);
-		Debug.Log("Joystick count : " +ReInput.controllers.joystickCount);
+		gun = new PistolScript ();
+
 
 		if (Input.GetJoystickNames().Length == 0) {
 			Debug.Log("no joysticks");
 		}
-
-		if (Input.GetJoystickNames().Length > 0) {
-			foreach(string joystick in Input.GetJoystickNames()) {
-				print (joystick);
-			}
-		}
+			
 	}
 	
 	// Update is called once per frame
@@ -59,11 +55,13 @@ public class PlaneScript : MonoBehaviour, IShootable {
 				DecreaseBoost ();
 		}
 
-		if(player.GetButtonDown("Shoot")) {
-			GameObject bullet = (GameObject)Instantiate(BulletPrefab, ShootOrigin.position, Quaternion.LookRotation(forward, Vector3.up));
-			Bullet b = bullet.GetComponent<Bullet>();
-			b.SetOriginSpeed( rigidbody.velocity.magnitude );
-			b.SetOriginObject (gameObject);
+		if(gun.ShouldShoot(player.GetButton("Shoot"))) {
+			gun.Shoot(
+				ShootOrigin.position,
+				Quaternion.LookRotation (forward, Vector3.up),
+				rigidbody.velocity.magnitude,
+				gameObject
+			);
 		}
 
 		if(Propeller) {

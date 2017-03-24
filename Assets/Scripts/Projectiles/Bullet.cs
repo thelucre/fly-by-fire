@@ -6,7 +6,7 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 
 	Rigidbody rigidbody;
-	float OriginSpeed = 0, Speed = 50f;
+	float OriginSpeed = 0, Speed = 80f;
 	GameObject OriginObject; 
 
 
