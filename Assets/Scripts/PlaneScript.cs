@@ -29,7 +29,7 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	{
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		player = ReInput.players.GetPlayer(PlayerID);
-		gun = new PistolScript ();
+		gun = new MachineGunScript ();
 
 
 		if (Input.GetJoystickNames().Length == 0) {
