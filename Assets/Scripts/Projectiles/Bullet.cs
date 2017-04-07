@@ -12,12 +12,14 @@ public class Bullet : MonoBehaviour {
 
 	public void SetOriginSpeed(float _playerMagnitude) { OriginSpeed = _playerMagnitude; }
 
-	void Start() {
+	void Start() 
+	{
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		Sound.Instance.PlaySFX (Sound.SHOOT);
 	}
 
-	void FixedUpdate() {
+	void FixedUpdate() 
+	{
 		rigidbody.velocity = transform.forward * (Speed + OriginSpeed);
 	}
 

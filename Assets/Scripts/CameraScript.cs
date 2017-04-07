@@ -35,6 +35,9 @@ public class CameraScript : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
+		// Check the players list to make sure we've removed null entries
+		ClearNonexistantPlayers(players);
+
 		// Position the camera in the center.
 		Vector3 newCameraPos = Camera.main.transform.position;
 
@@ -60,6 +63,11 @@ public class CameraScript : MonoBehaviour {
 		ShakeAmount -= ShakeDecay; 
 		ShakeAmount = Mathf.Max (ShakeAmount, 0);
 
+	}
+
+	void ClearNonexistantPlayers(List<Transform> transforms)
+	{
+		transforms.RemoveAll(item => item == null);
 	}
 
 	Vector3 FindCenterPoint(List<Transform> transforms)

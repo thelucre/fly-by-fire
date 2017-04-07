@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Rewired;
+using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
-public class PlaneScript : MonoBehaviour, IShootable {
+public class PlaneScript : NetworkBehaviour, IShootable {
 
 	public int PlayerID;
 	public Transform ShootOrigin;
@@ -11,6 +12,7 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	public Transform Propeller;
 
 	Player player; 
+	[SyncVar]
 	int Health = 3;
 	bool IsBoosting = false;
 
@@ -36,7 +38,7 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	{
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 		player = ReInput.players.GetPlayer(PlayerID);
-		gun = new MachineGunScript ();
+		gun = new PistolScript ();
 
 
 		if (Input.GetJoystickNames().Length == 0) {
@@ -48,6 +50,9 @@ public class PlaneScript : MonoBehaviour, IShootable {
 	// Update is called once per frame
 	void Update () 
 	{
+		// Don't process input for player's outside this client 
+		if(!isLocalPlayer) return;
+
 		Vector2 move = new Vector2(player.GetAxis("Rotate"),0);
 		rigidbody.AddTorque(0,0,-move.x*Rotation*Time.deltaTime);
 			
@@ -63,17 +68,24 @@ public class PlaneScript : MonoBehaviour, IShootable {
 		}
 
 		if(gun.ShouldShoot(player.GetButton("Shoot"))) {
-			gun.Shoot(
-				ShootOrigin.position,
-				Quaternion.LookRotation (forward, Vector3.up),
-				rigidbody.velocity.magnitude,
-				gameObject
-			);
+			CmdFire(forward);
+			Debug.Log(ShootOrigin.position);
+			Debug.Log(ShootOrigin.localPosition);
 		}
 
 		if(Propeller) {
 			Propeller.Rotate(rigidbody.velocity.magnitude, 0, 0);
 		}
+	}
+
+	[Command]
+	void CmdFire(Vector3 forward) {
+		gun.Shoot(
+			ShootOrigin.position,
+			Quaternion.LookRotation (forward, Vector3.up),
+			rigidbody.velocity.magnitude,
+			gameObject
+		);
 	}
 
 	public void TakeDamage ()

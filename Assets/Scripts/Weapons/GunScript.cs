@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public enum FIRING_TYPE {
 	SEMIAUTOMATIC,
@@ -76,5 +77,8 @@ public class GunScript : MonoBehaviour
 
 		if (FiringType == FIRING_TYPE.AUTOMATIC)
 			CoolDown = RateOfFire;
+
+		// Spawn the bullet on the Clients
+		NetworkServer.Spawn(bullet);
 	}
 }
