@@ -23,13 +23,6 @@ public class PlaneScript : MonoBehaviour, IShootable {
 
 	Rigidbody rigidbody;
 	GunScript gun;
-	CameraScript cam;
-
-	void Awake()
-	{
-			cam = Camera.main.gameObject.GetComponent<CameraScript>();
-			cam.AddPlayer(this.transform);
-	}
 
 	// Use this for initialization
 	void Start () 
